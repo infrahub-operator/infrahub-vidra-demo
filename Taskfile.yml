@@ -15,7 +15,7 @@ tasks:
     desc: Load data in Infrahub and Start Webserver
   startweb:
     cmds:
-      - python3 webserver/webserver.py
+      - poetry run python3 webserver/webserver.py
     desc: Start Webserver
   destroy:
     cmds:

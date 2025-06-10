@@ -9,12 +9,14 @@ package-mode = false
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
 flask = "*"
+requests = "^2.32.4"
+
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.10.0"
 ruff = "^0.7.2"
 bandit = "^1.7.0"
-go-task-bin = {version = "*", source = "pypi"}
+go-task-bin = "^3.44.0"
 
 [build-system]
 requires = ["poetry-core"]

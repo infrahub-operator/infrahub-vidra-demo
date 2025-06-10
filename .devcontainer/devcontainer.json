@@ -1,6 +1,6 @@
 {
-	"name": "Kubernetes - Minikube-in-Docker",
-	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
+	"name": "Python Docker",
+	"image": "python:3.12-bookworm",
 
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {
@@ -11,11 +11,9 @@
 			"version": "latest",
 			"dockerDashComposeVersion": "latest"
 		},
-		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-			"version": "latest",
-			"helm": "latest",
-			"minikube": "latest"
-		}
+		"ghcr.io/devcontainers-extra/features/kubectl-asdf:2": {},
+		"ghcr.io/mpriscella/features/kind:1": {},
+		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {}
 	},
 
 	// Configure tool-specific properties.
@@ -43,13 +41,13 @@
 	
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
-		8000,
+		8000
 	],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "kubectl version",
 
 	// Use 'postStartCommand' to run commands after the container is created like starting minikube.
-	"postStartCommand": "minikube start"
+	"postStartCommand": "kind create cluster"
 
 }

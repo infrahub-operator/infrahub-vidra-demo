@@ -184,7 +184,7 @@ def creategitintegration() -> None:
           CoreReadOnlyRepositoryUpsert(
             data: {
               name: { value: "Gitlab Inventory" },
-              location: { value: "https://gitlab.ost.ch/ins-stud/sa-ba/ba-fs25-infrahub/infrahubintegration.git" },
+              location: { value: "https://github.com/infrahub-operator/infrahub-vidra-demo.git" },
               ref: { value: "Corrected-Pipeline" },
               credential: { hfid: "gitlab-deployment-token" }
             }
