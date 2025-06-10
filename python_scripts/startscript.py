@@ -172,15 +172,6 @@ def creategitintegration() -> None:
     payload = {
         "query": """
         mutation {
-          CorePasswordCredentialUpsert(
-            data: {
-              name: { value: "gitlab-deployment-token" },
-              username: { value: "gitlab+deploy-token-infrahub" },
-              password: { value: "gldt-pTpzustzLUEHZMTQ1ms3" }
-            }
-          ) {
-            ok
-          }
           CoreReadOnlyRepositoryUpsert(
             data: {
               name: { value: "Gitlab Inventory" },
