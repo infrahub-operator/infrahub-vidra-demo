@@ -58,7 +58,7 @@ nodes:
         regex: ^[1-5]$
       - name: host
         kind: Text
-        description: URL to the Webserver x.cldop-test-0.network.garden
+        description: URL to the Webserver x.
         read_only: true
         optional: false
         computed_attribute:

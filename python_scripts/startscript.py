@@ -176,8 +176,7 @@ def creategitintegration() -> None:
             data: {
               name: { value: "Gitlab Inventory" },
               location: { value: "https://github.com/infrahub-operator/infrahub-vidra-demo.git" },
-              ref: { value: "Corrected-Pipeline" },
-              credential: { hfid: "gitlab-deployment-token" }
+              ref: { value: "main" },
             }
           ) {
             ok

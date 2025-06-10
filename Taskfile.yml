@@ -4,6 +4,16 @@
 version: '3'
 
 tasks:
+  init:
+    - task: install
+    - task: helm install vidra-operator oci://ghcr.io/infrahub-operator/vidra/helm-charts/vidra-operator --namespace vidra-system --create-namespace
+    - |
+      while ! curl -s http://localhost:8000 > /dev/null; do
+        echo "Waiting for localhost:8000 to be available..."
+        sleep 5
+      done
+    - task: start
+
   install:
     cmds:
       - docker compose up

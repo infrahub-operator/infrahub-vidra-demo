@@ -13,7 +13,8 @@
 		},
 		"ghcr.io/devcontainers-extra/features/kubectl-asdf:2": {},
 		"ghcr.io/mpriscella/features/kind:1": {},
-		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {}
+		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
+		"ghcr.io/dhoeric/features/k9s:1": {},
 	},
 
 	// Configure tool-specific properties.
@@ -48,6 +49,6 @@
 	// "postCreateCommand": "kubectl version",
 
 	// Use 'postStartCommand' to run commands after the container is created like starting minikube.
-	"postStartCommand": "kind create cluster"
+	"initializeCommand": "kind create cluster && curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash"
 
 }
