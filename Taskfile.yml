@@ -13,6 +13,7 @@ tasks:
       done
     - task: load-data
     - task: start-web
+  desc: Installation of Infrahub and Vidra, provision infrahub and run Webserver
 
   install:
     cmds:

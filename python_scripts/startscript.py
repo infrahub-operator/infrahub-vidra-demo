@@ -21,7 +21,7 @@ def creategroup() -> None:
       """
     }
     send_graphql(payload)
-    print("Object Gruppe 'g_webserver' wurde erstellt")
+    print("Object Gruppe 'g_webserver' was created")
 
     """Create a new group called 'g_virtuellmaschine'."""
     payload = {
@@ -38,7 +38,7 @@ def creategroup() -> None:
       """
     }
     send_graphql(payload)
-    print("Object Gruppe 'g_virtuellmaschine' wurde erstellt")
+    print("Object Gruppe 'g_virtuellmaschine' was created")
 
 
 def createtemplate() -> None:
@@ -62,7 +62,7 @@ def createtemplate() -> None:
       """
     }
     send_graphql(payload)
-    print("Template wurde erstellt")
+    print("Template was created")
 
     """Create a new Kubernetes template for g_virtuellmaschine."""
     payload = {
@@ -81,7 +81,7 @@ def createtemplate() -> None:
       """
     }
     send_graphql(payload)
-    print("Template wurde erstellt")
+    print("Template was created")
 
 
 def createrole() -> None:
@@ -100,7 +100,7 @@ def createrole() -> None:
       """
     }
     send_graphql(payload)
-    print("Role wurde erstellt")
+    print("Role was created")
 
 
 def createobjectpermission() -> None:
@@ -123,7 +123,7 @@ def createobjectpermission() -> None:
       """
     }
     send_graphql(payload)
-    print("Permission wurde erstellt")
+    print("Permission was created")
 
 
 def createusergroup() -> None:
@@ -143,7 +143,7 @@ def createusergroup() -> None:
       """
     }
     send_graphql(payload)
-    print("Usergroup wurde erstellt")
+    print("Usergroup was created")
 
 
 def createserviceuser() -> None:
@@ -164,7 +164,7 @@ def createserviceuser() -> None:
       """
     }
     send_graphql(payload)
-    print("User wurde erstellt")
+    print("User was created")
 
 
 def creategitintegration() -> None:
@@ -186,7 +186,7 @@ def creategitintegration() -> None:
     }
 
     send_graphql(payload)
-    print("Git Integration wurde erstellt")
+    print("Git Integration was created")
 
 
 def createpool() -> Any:
@@ -212,7 +212,7 @@ def createpool() -> Any:
     """
     }
     id = send_graphql(payload)
-    print("Addresspool wurde erstellt")
+    print("Addresspool was created")
     return id
 
 
