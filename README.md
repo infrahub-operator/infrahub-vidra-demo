@@ -13,12 +13,12 @@ kubectl get pod -n vidra-system
 Apparently completion and the alias `k` are not working in Codespaces
 
 ## Frontend and Infrahub
-Infrahub and the self-service Frontend can be accessed by opening the ports tab, clicking on the globe icon in the Forwarded Address column of port 8000 and 5001.
+Infrahub and the self-service Frontend can be accessed by opening the ports tab, clicking on the globe icon in the Forwarded Address column of port `8000` and `5001`.
 
 - In the frontend you can now create a webserver request.
 - This will generate a proposed change on a new branch in Infrahub. 
 - Login to Infrahub (User: `admin`; Password: `infrahub`) and merge the proposed change. It will now create the Artifacts.
-
+`
 ## Vidra Sync
 Now you can add a [InfrahubSync](https://infrahub-operator.github.io/vidra/guides/usage) 
 
