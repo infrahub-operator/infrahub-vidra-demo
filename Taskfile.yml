@@ -6,33 +6,83 @@ version: '3'
 tasks:
   init:
     - task: install
-    - task: helm install vidra-operator oci://ghcr.io/infrahub-operator/vidra/helm-charts/vidra-operator --namespace vidra-system --create-namespace
     - |
       while ! curl -s http://localhost:8000 > /dev/null; do
         echo "Waiting for localhost:8000 to be available..."
         sleep 5
       done
-    - task: start
+    - task: load-data
+    - task: start-web
 
   install:
     cmds:
-      - docker compose up
-    desc: Start Infrahub
-  start:
+      - |
+        if ! helm list -n vidra-system | grep -q vidra-operator; then
+          helm install vidra-operator oci://ghcr.io/infrahub-operator/vidra/helm-charts/vidra-operator --namespace vidra-system --create-namespace
+        else
+          echo "vidra-operator already installed."
+        fi
+      - |
+        if ! command -v vidra-cli > /dev/null; then
+          go install github.com/infrahub-operator/vidra/vidra-cli@latest
+          vidra-cli completion bash > ~/.vidra-cli-completion.bash
+          echo '[[ -f /usr/share/bash-completion/bash_completion ]] && source /usr/share/bash-completion/bash_completion' >> ~/.bashrc
+          echo 'source ~/.vidra-cli-completion.bash' >> ~/.bashrc
+          echo 'complete -o default -F __start_vidra vidra-cli' >> ~/.bashrc
+        else
+          echo "vidra-cli already installed."
+        fi
+      - docker compose up -d
+    desc: Install Vidra Operator and CLI and Start Infrahub
+  
+  uninstall:
+    cmds:
+      - helm uninstall vidra-operator --namespace vidra-system
+      - kubectl delete namespace vidra-system
+      - echo "Vidra Operator and CLI uninstalled."
+      - docker compose down
+    desc: Uninstall Vidra Operator and CLI
+
+  load-data:
     cmds:
       - python3 python_scripts/startscript.py
-      - task startweb
     desc: Load data in Infrahub and Start Webserver
-  startweb:
+
+  start-web:
+    silent: true
+    ignore_error: true
     cmds:
-      - poetry run python3 webserver/webserver.py
+      - sh -c 'nohup poetry run python3 webserver/webserver.py > webserver.log 2>&1 &'
     desc: Start Webserver
+
+  stop-web:
+    cmds:
+      - pkill -f webserver.py
+    desc: Stop Webserver
+  
+  vidra-add-sync:
+    cmds:
+      - host_ip=$(hostname -I | awk '{print $1}')
+      - vidra-cli credentials apply https://${host_ip} --username admin --password infrahub
+      - vidra-cli infrahubsync apply "http://${host_ip}:8000" -a Webserver_Manifest -b main -N default -e
+    desc: Sync Infrahub with the latest changes
+
+  develop:
+    cmds:
+       - git clone https://github.com/infrahub-operator/vidra.git
+       - helm uninstall vidra-operator --namespace vidra-system || true
+       - echo "vidra can now be found in the vidra directory - use the Makefile like described in https://infrahub-operator.github.io/vidra/topics/contributions"
+    desc: Start Infrahub in development mode
+
   destroy:
     cmds:
-      - docker compose down
+      - task: uninstall
       - docker system prune -a
       - docker volume prune -a
-    desc: Delete the Infrahub Server
+      - helm uninstall vidra-operator --namespace vidra-system
+      - kubectl delete namespace vidra-system
+    desc: Delete everything
+
   default:
     cmds:
       - task --list-all

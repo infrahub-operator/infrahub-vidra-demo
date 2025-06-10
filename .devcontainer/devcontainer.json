@@ -15,6 +15,7 @@
 		"ghcr.io/mpriscella/features/kind:1": {},
 		"ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
 		"ghcr.io/dhoeric/features/k9s:1": {},
+		"ghcr.io/devcontainers/features/go:1": {}
 	},
 
 	// Configure tool-specific properties.
@@ -34,7 +35,7 @@
 		"PREFECT_API_URL": "http://127.0.0.1:4200/api",
 		"PREFECT_UI_API_URL": "http://127.0.0.1:4200/api"
 	},
-	"postCreateCommand": "pip3 install poetry && poetry config virtualenvs.in-project true && poetry install --with dev",
+	"postCreateCommand": "pip3 install poetry --no-input && poetry config virtualenvs.in-project true --no-interaction && poetry install --no-interaction",
 	"hostRequirements": {
 		"cpus": 4,
 		"memory": "16gb"
@@ -49,6 +50,6 @@
 	// "postCreateCommand": "kubectl version",
 
 	// Use 'postStartCommand' to run commands after the container is created like starting minikube.
-	"initializeCommand": "kind create cluster && curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash"
+	"postAttachCommand": "/bin/sh -c 'apt-get update && apt-get install -y bash-completion; kind get clusters | grep -q \"^kind$\" || (kind create cluster && curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash); echo \"[ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion\" >> /etc/bash.bashrc; echo \"source <(kubectl completion bash)\" >> /etc/bash.bashrc; echo \"alias k=kubectl\" >> /etc/bash.bashrc; echo \"complete -F __start_kubectl k\" >> /etc/bash.bashrc'"
 
 }
