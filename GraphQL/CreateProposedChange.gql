@@ -1,0 +1,28 @@
+mutation CreateProposedChange(
+  $sourcebranch: String!,
+	$name: String!,
+	$description: String!)
+{
+  CoreProposedChangeCreate(data: {
+    source_branch: {
+      value: $sourcebranch
+    },
+    destination_branch: {
+      value: "main"
+    },
+    name: {
+      value: $name
+    },
+    description: {
+      value: $description
+    },
+    reviewers: {
+      hfid: "admin"
+    }
+  }) {
+  	ok
+    object {
+      id
+    }
+  }
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ressource Request</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        // Function to handle showing/hiding fields based on deployment type
+        function toggleFields() {
+            const deploymentType = document.getElementById("deployment_type").value;
+            const urlField = document.getElementById("url_field");
+            const imageField = document.getElementById("image_field");
+            
+            // Hide both fields initially
+            urlField.style.display = "none";
+            imageField.style.display = "none";
+            
+            // Show the appropriate field based on the deployment type
+            if (deploymentType === "VM") {
+                urlField.style.display = "block";
+            } else if (deploymentType === "Webserver") {
+                imageField.style.display = "block";
+            }
+        }
+        window.onload = toggleFields;
+
+        function disableButton() {
+            const btn = document.getElementById("submit-btn");
+            btn.disabled = true;
+            btn.innerText = "Bitte warten..."; // Optional: Ladehinweis
+        }
+    </script>
+</head>
+<body>
+    <h1>Hii, please fill out to request your Ressource</h1>
+    <form method="POST" onsubmit="disableButton()">
+        <label for="deployment_type">Ressource:</label>
+        <select name="deployment_type" id="deployment_type" onchange="toggleFields()">
+            <option value="Webserver" selected>Webserver</option>
+            <option value="VM">VM</option>
+        </select>
+        <br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" maxlength="15" minlength="4" pattern="[A-Za-z0-9\-._~!$&'()*+,;=:@\/]*$" required>
+        <br><br>
+
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" maxlength="50" minlength="4">
+        <br><br>
+
+        <label for="namespace">Namespace:</label>
+        <input type="text" id="namespace" name="namespace" maxlength="15" minlength="4" pattern="[A-Za-z0-9\-._~!$&'()*+,;=:@\/]*$" required>
+        <br><br>
+
+        <div id="url_field" style="display:none;">
+            <label for="url">URL:</label>
+            <select name="url" id="url">
+                <option value="docker://quay.io/containerdisks/fedora:40" selected>Fedora-VM</option>
+                <option value="docker://quay.io/containerdisks/ubuntu:24.04">Ubuntu-VM</option>
+            </select>
+        </div>
+
+        <div id="image_field" style="display:none;">
+            <label for="image">Image:</label>
+            <select name="image" id="image">
+                <option value="httpd:latest" selected>Apache</option>
+                <option value="nginx:latest">Nginx</option>
+                <option value="marcincuber/2048-game">Marcincuber Game</option>
+                <option value="public.ecr.aws/pahudnet/nyancat-docker-image">Nyan cat</option>
+            </select>
+        </div>
+
+        <br><br>
+        <button type="submit" id="submit-btn">Send</button>
+    </form>
+
+    {% if result is not none %}
+        <p> {{ result.replace('\n', '<br>')|safe }} </p>
+    {% endif %}
+    
+    <container>
+        <img src="static/logoinfrahub_withoutbackground.png">
+        <img src="static/logoinfrahub.svg">
+    </container>
+</body>
+</html>

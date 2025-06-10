@@ -1,0 +1,29 @@
+query GetWebserver ($webserver: String!) {
+  KubernetesWebserver (name__value: $webserver) {
+    edges {
+      node {
+        name {
+          value
+        }
+        port {
+          value
+        }
+        containerport {
+          value
+        }
+        replicas {
+          value
+        }
+        image {
+          value
+        }
+        namespace {
+          value
+        }
+        host {
+          value
+        }
+      }
+    }
+  }
+}

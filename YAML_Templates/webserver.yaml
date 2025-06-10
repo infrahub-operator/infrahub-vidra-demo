@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-namespace
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-name
+  namespace: ns-namespace
+  labels:
+    app: l-name
+spec:
+  replicas: replicas
+  selector:
+    matchLabels:
+      app: l-name
+  template:
+    metadata:
+      labels:
+        app: l-name
+    spec:
+      containers:
+        - name: con-name
+          image: image
+          ports:
+            - containerPort: containerport
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-name
+  namespace: ns-namespace
+  labels:
+    app: l-name
+spec:
+  ports:
+    - port: port
+      name: http
+  selector:
+    app: l-name
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ing-name
+  namespace: ns-namespace
+spec:
+  rules:
+    - host: host
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-name
+                port:
+                  number: port

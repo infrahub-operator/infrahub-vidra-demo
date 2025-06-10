@@ -1,0 +1,55 @@
+{
+	"name": "Kubernetes - Minikube-in-Docker",
+	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
+
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			"moby": true,
+			"azureDnsAutoDetection": true,
+			"installDockerBuildx": true,
+			"installDockerComposeSwitch": true,
+			"version": "latest",
+			"dockerDashComposeVersion": "latest"
+		},
+		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+			"version": "latest",
+			"helm": "latest",
+			"minikube": "latest"
+		}
+	},
+
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			"settings": {},
+			"extensions": [
+				"streetsidesoftware.code-spell-checker"
+			]
+		}
+	},
+	"containerEnv": {
+		"INFRAHUB_INITIAL_AGENT_TOKEN": "44af444d-3b26-410d-9546-b758657e026c",
+		"INFRAHUB_API_TOKEN": "44af444d-3b26-410d-9546-b758657e026c",
+		"INFRAHUB_API_URL": "http://localhost:8000",
+		"PREFECT_API_URL": "http://127.0.0.1:4200/api",
+		"PREFECT_UI_API_URL": "http://127.0.0.1:4200/api"
+	},
+	"postCreateCommand": "pip3 install poetry && poetry config virtualenvs.in-project true && poetry install --with dev",
+	"hostRequirements": {
+		"cpus": 4,
+		"memory": "16gb"
+	},
+	
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		8000,
+	],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "kubectl version",
+
+	// Use 'postStartCommand' to run commands after the container is created like starting minikube.
+	"postStartCommand": "minikube start"
+
+}

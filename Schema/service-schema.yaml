@@ -1,0 +1,118 @@
+---
+version: "1.0"
+generics:
+  - name: Ressource
+    namespace: Kubernetes
+    description: Generic Device Data
+    branch: aware
+    include_in_menu: false
+    display_labels:
+      - name__value
+    order_by:
+      - name__value
+    uniqueness_constraints:
+      - ["name__value", "namespace__value"]
+    attributes:
+      - name: name
+        kind: Text
+        description: Name of your Webservice
+        order_weight: 1
+      - name: namespace
+        kind: Text
+        description: Namespace name - Default ns-namespace
+        order_weight: 2
+      - name: description
+        kind: Text
+        description: Additional Informations about the Webservice
+        optional: true
+        order_weight: 3
+nodes:
+  - name: Webserver
+    namespace: Kubernetes
+    icon: mdi:hand-extended
+    include_in_menu: true
+    generate_template: true
+    inherit_from:
+      - KubernetesRessource
+      - CoreArtifactTarget
+    attributes:
+      - name: port
+        kind: Number
+        description: The Port Number on which the Service is reachable
+        optional: false
+        regex: ^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-9][0-9]{0,3})$  # yamllint disable-line rule:line-length
+      - name: containerport
+        kind: Number
+        description: The Port Number on which the Container is reachable
+        optional: false
+        regex: ^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-9][0-9]{0,3})$  # yamllint disable-line rule:line-length
+      - name: replicas
+        kind: Number
+        description: The Number of replicas of the Deployment
+        optional: false
+        regex: ^[1-5]$
+      - name: version
+        kind: Number
+        description: The Version of the Deployment
+        optional: true
+        regex: ^[1-5]$
+      - name: host
+        kind: Text
+        description: URL to the Webserver x.cldop-test-0.network.garden
+        read_only: true
+        optional: false
+        computed_attribute:
+          kind: Jinja2
+          jinja2_template: "{{ name__value }}.cldop-test-0.network.garden"
+      - name: image
+        kind: Dropdown
+        optional: false
+        choices:
+          - name: httpd:latest
+            description: Image for the Apache Webserver
+            color: "#7f7fff"
+          - name: nginx:latest
+            description: Image for the Nginx Webserver
+            color: "#aeeeee"
+          - name: marcincuber/2048-game
+            description: Image for classic 2048 game
+            color: "#008000"
+          - name: public.ecr.aws/pahudnet/nyancat-docker-image
+            description: Image for Nyan Cat Docker image
+            color: "#FFFF00"
+          - name: registry.gitlab.ost.ch:45023/ins-stud/sa-ba/ba-fs25-infrahub/infrahubintegration/flask-webserver:latest
+            description: Image for Flask Webserver Frontend
+            color: "#FF4500"
+
+  - name: VirtuellMaschine
+    namespace: Kubernetes
+    icon: mdi:linux
+    include_in_menu: true
+    generate_template: true
+    inherit_from:
+      - KubernetesRessource
+      - CoreArtifactTarget
+    attributes:
+      - name: cores
+        kind: Number
+      - name: url
+        kind: Dropdown
+        optional: false
+        choices:
+          - name: docker://quay.io/containerdisks/ubuntu:24.04
+            description: Ubuntu
+            color: "#7f7fff"
+          - name: docker://quay.io/containerdisks/fedora:40
+            description: Fedora
+            color: "#aeeeee"
+      - name: operating_system
+        kind: Text
+        read_only: true
+        optional: false
+        computed_attribute:
+          kind: Jinja2
+          jinja2_template: "{{ url__description|lower }}-vm"
+      - name: port
+        kind: Number
+        description: Port to use for ssh
+        optional: false

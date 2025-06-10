@@ -1,0 +1,19 @@
+mutation CreateVirtuellMaschine ($name:String!, $description:String!, $namespace:String!, $url: String!) {
+  KubernetesVirtuellMaschineCreate(
+    data: {
+        object_template: {hfid: "tem-virtuellmaschine"},
+        name: {value: $name},
+        description: {value: $description}
+        namespace: {value: $namespace}
+        url: {value: $url}
+        member_of_groups: {hfid: "g_virtuellmaschine"}
+        port: {from_pool: {id: "portpool"}}
+    }
+  ) {
+    object {
+      port {
+        value
+      }
+    }
+  }
+}

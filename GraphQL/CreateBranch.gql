@@ -1,0 +1,9 @@
+mutation CreateBranch($branchname: String!){
+  BranchCreate(data: { name: $branchname }) {
+    ok
+    object {
+      id
+      name
+    }
+  }
+}

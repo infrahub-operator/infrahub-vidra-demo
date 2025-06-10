@@ -1,0 +1,28 @@
+---
+# https://taskfile.dev/
+
+version: '3'
+
+tasks:
+  install:
+    cmds:
+      - docker compose up
+    desc: Start Infrahub
+  start:
+    cmds:
+      - python3 python_scripts/startscript.py
+      - task startweb
+    desc: Load data in Infrahub and Start Webserver
+  startweb:
+    cmds:
+      - python3 webserver/webserver.py
+    desc: Start Webserver
+  destroy:
+    cmds:
+      - docker compose down
+      - docker system prune -a
+      - docker volume prune -a
+    desc: Delete the Infrahub Server
+  default:
+    cmds:
+      - task --list-all

@@ -1,0 +1,98 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-namespace
+
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: name
+  namespace: ns-namespace
+spec:
+  runStrategy: RerunOnFailure
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-name
+
+    spec:
+      domain:
+        cpu:
+          cores: cores
+        resources:
+          requests:
+            memory: 4G
+        devices:
+          disks:
+            - name: pvc-name
+              disk:
+                bus: virtio
+            - name: cloudinitdisk
+              disk:
+                bus: virtio
+          interfaces:
+            - name: podnet
+              masquerade: {}
+      networks:
+        - name: podnet
+          pod: {}
+      volumes:
+        - name: pvc-name
+          persistentVolumeClaim:
+            claimName: pvc-name
+        - name: cloudinitdisk
+          cloudInitNoCloud:
+            networkData: |
+              network:
+                version: 2
+                ethernets:
+                  enp1s0:
+                    dhcp4: true
+                    nameservers:
+                      addresses:
+                        - 1.1.1.1
+                        - 8.8.8.8
+            userData: |-
+              # cloud-config
+              users:
+                - name: name
+                  sudo: ['ALL=(ALL) NOPASSWD:ALL']
+                  groups: sudo
+                  shell: /bin/bash
+                  lock_passwd: false
+                  plain_text_passwd: name
+              ssh_pwauth: true
+              disable_root: false
+
+  dataVolumeTemplates:
+    - metadata:
+        name: pvc-name
+      spec:
+        storage:
+          resources:
+            requests:
+              storage: 35Gi
+          accessModes:
+            - ReadWriteOnce
+          storageClassName: "local-path"
+        source:
+          registry:
+            url: url
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-name
+  namespace: ns-namespace
+spec:
+  type: NodePort
+  selector:
+    kubevirt.io/vm: vm-name
+  ports:
+    - name: ssh
+      port: 22
+      targetPort: 22
+      nodePort: port

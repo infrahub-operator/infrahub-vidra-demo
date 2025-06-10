@@ -1,0 +1,29 @@
+query GetVirtuellMaschine ($virtuellmaschine: String!) {
+  KubernetesVirtuellMaschine (name__value: $virtuellmaschine) {
+    edges {
+      node {
+        name {
+          value
+        }
+        description {
+          value
+        }
+        cores {
+          value
+        }
+        namespace {
+          value
+        }
+        url {
+          value
+        }
+        operating_system {
+          value
+        }
+        port {
+          value
+        }
+      }
+    }
+  }
+}

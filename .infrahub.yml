@@ -1,0 +1,43 @@
+---
+queries:
+  - name: GetWebserver
+    file_path: "GraphQL/GetWebserver.gql"
+  - name: GetVirtuellMaschine
+    file_path: "GraphQL/GetVirtuellMaschine.gql"
+  - name: CreateWebserver
+    file_path: "GraphQL/CreateWebserver.gql"
+  - name: CreateVirtuellMaschine
+    file_path: "GraphQL/CreateVirtuellMaschine.gql"
+  - name: CreateBranch
+    file_path: "GraphQL/CreateBranch.gql"
+  - name: CreateProposedChange
+    file_path: "GraphQL/CreateProposedChange.gql"
+  - name: ArtifactIDs
+    file_path: "GraphQL/ArtifactIDs.gql"
+
+schemas:
+  - "Schema/service-schema.yaml"
+
+python_transforms:
+  - name: TransformWebserver
+    class_name: TransformWebserver
+    file_path: "python_transform/transform_webserver.py"
+  - name: TransformVirtuellMaschine
+    class_name: TransformVirtuellMaschine
+    file_path: "python_transform/transform_virtuellmaschine.py"
+
+artifact_definitions:
+  - name: "Webserver_Artifact_Definition"
+    artifact_name: "Webserver_Manifest"
+    parameters:
+      webserver: "name__value"
+    content_type: "application/yaml"
+    targets: "g_webserver"
+    transformation: "TransformWebserver"
+  - name: "VirtuellMaschine_Artifact_Definition"
+    artifact_name: "VirtuellMaschine_Manifest"
+    parameters:
+      virtuellmaschine: "name__value"
+    content_type: "application/yaml"
+    targets: "g_virtuellmaschine"
+    transformation: "TransformVirtuellMaschine"
