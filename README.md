@@ -15,7 +15,7 @@ Apparently completion and the alias `k` are not working in Codespaces
 ## Frontend and Infrahub
 Infrahub and the self-service Frontend can be accessed by opening the ports tab, clicking on the globe icon in the Forwarded Address column of port `8000` and `5001`.
 
-- In the frontend you can now create a webserver request.
+- In the frontend you can now create a webserver request. (like one for the Nyan Cat Image)
 - This will generate a proposed change on a new branch in Infrahub. 
 - Login to Infrahub (User: `admin`; Password: `infrahub`) and merge the proposed change. It will now create the Artifacts.
 `
@@ -52,11 +52,9 @@ or simply use
 ```bash
 k9s
 ```
-
-Use the following command to see all prebuilt commands
+Access the Webserver:
 ```bash
-task
+kubectl port-forward -n <namespace> <svc/service-name> 8080:80
 ```
 
-
-HAVE FUN!
+HAVE FUN! 🥳
