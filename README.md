@@ -53,4 +53,10 @@ or simply use
 k9s
 ```
 
+Use the following command to see all prebuilt commands
+```bash
+task
+```
+
+
 HAVE FUN!

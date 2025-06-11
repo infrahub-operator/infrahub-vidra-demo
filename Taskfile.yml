@@ -5,15 +5,16 @@ version: '3'
 
 tasks:
   init:
-    - task: install
-    - |
-      while ! curl -s http://localhost:8000 > /dev/null; do
-        echo "Waiting for localhost:8000 to be available..."
-        sleep 5
-      done
-    - task: load-data
-    - task: start-web
-  desc: Installation of Infrahub and Vidra, provision infrahub and run Webserver
+    cmds:
+      - task: install
+      - |
+        while ! curl -s http://localhost:8000 > /dev/null; do
+          echo "Waiting for localhost:8000 to be available..."
+          sleep 5
+        done
+      - task: load-data
+      - task: start-web
+    desc: Installation of Infrahub and Vidra, provision infrahub and run Webserver
 
   install:
     cmds:
@@ -73,7 +74,7 @@ tasks:
        - git clone https://github.com/infrahub-operator/vidra.git
        - helm uninstall vidra-operator --namespace vidra-system || true
        - echo "vidra can now be found in the vidra directory - use the Makefile like described in https://infrahub-operator.github.io/vidra/topics/contributions"
-    desc: Start Infrahub in development mode
+    desc: Get the Vidra Operator code to run and develop it locally 
 
   destroy:
     cmds:
