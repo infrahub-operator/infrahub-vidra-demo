@@ -16,23 +16,25 @@ task init
 ```
 This sets up:
 
-A local Kubernetes cluster via [Kind](https://kind.sigs.k8s.io)
-Infrahub (including a custom self-service UI)
-Vidra Operator and CLI
+- A local Kubernetes cluster via [Kind](https://kind.sigs.k8s.io) (incl. kubectl, Helm and k9s)
+- Infrahub (incl. git sync, k8s schema, k8s transformation, grqphQL Queries and k8s YAML templates)
+- A custom self-service UI (for easy requesting new webservers)
+- Vidra Operator and CLI
+  
 Check Vidra is running:
 ```bash
 kubectl get pods -n vidra-system
 ```
-💡 Shell convenience features like k alias and completions may not work in Codespaces.
+💡 Shell convenience features like `k` alias for `kubectl` and completions may not work in Codespaces.
 
-🔧 Infrastructure Modeling via UI
+## 🔧 Infrastructure Modeling via UI
 
 Access UIs via the Ports tab:
-Port `8000`: Infrahub (login: admin / infrahub)
-Port `5001`: Self-service frontend
-Create a new request (e.g., a webserver resource for Nyan Cat ).
-This triggers:
+- Port `8000`: Infrahub (login: admin / infrahub)
+- Port `5001`: Self-service frontend
+- Create a new request (e.g., a webserver resource for Nyan Cat ).
 
+This triggers:
 - A new Infrahub branch with the proposed change
 - Adding the requested webserver to that branche and to the correct group whithin Infrahub.
 - After merging: k8s artifact generation
@@ -50,6 +52,8 @@ If running locally (not in Codespaces), you can also use:
 ```bash
 task vidra-add-sync
 ```
+
+Now your webserver is deployed to the cluster following GitOps principles (changes to the webserver resouces are detected and synced again with the source of source of truth (Infrahub).
 
 ## Explore Vidra
 ```bash
