@@ -3,19 +3,19 @@ import sys
 import os
 from typing import Union
 
-# Ergänze den Pfad für das Python-Skript
+# Add the path for the Python script
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from python_scripts.createobjects import createwebserver, createvirtuellmaschine
 
 app = Flask(__name__)
 
 
-# Route für die Eingabeseite
+# Route for the input page
 @app.route("/", methods=["GET", "POST"]) # type: ignore
 def index() -> str:
-    """Diese Funktion zeigt das Formular an und verarbeitet es, wenn es abgesendet wird.
+    """This function displays the form and processes it when submitted.
 
-    Sie nimmt Benutzereingaben entgegen, ruft das Python-Skript auf und gibt das Ergebnis zurück.
+    It receives user input, calls the Python script, and returns the result.
     """
     if request.method == "POST":
         deployment_type = request.form.get("deployment_type")
@@ -25,7 +25,7 @@ def index() -> str:
         url = request.form.get("url")
         image = request.form.get("image")
 
-        # Beispiel: Aufruf eines Python-Skripts mit den Eingabewerten
+        # Example: Call a Python script with the input values
         result = run_python_script(
             deployment_type,  
             name,  
@@ -40,7 +40,7 @@ def index() -> str:
     return render_template("index.html", result=None)  # type: ignore
 
 
-# Funktion, die das Python-Skript ausführt
+# Function that executes the Python script
 def run_python_script(
     deployment_type: str,
     name: str,
@@ -49,12 +49,12 @@ def run_python_script(
     url: Union[str, None],
     image: Union[str, None],
 ) -> str:
-    """Diese Funktion ruft das Python-Skript `createwebserver` auf und verarbeitet die Rückgabe.
+    """This function calls the Python script `createwebserver` and processes the return value.
 
-    Je nach Ergebnis wird eine Bestätigung oder eine Fehlermeldung zurückgegeben.
+    Depending on the result, a confirmation or an error message is returned.
     """
     try:
-        # Aufruf der createwebserver Funktion und Weiterleitung der Ergebnisse
+        # Call the createwebserver function and forward the results
         match deployment_type:
             case "Webserver":
                 result = createwebserver(name, description, namespace, image)  # type: ignore
@@ -63,16 +63,16 @@ def run_python_script(
             case _:
                 result = -1  # Return Error
 
-        # Überprüfung des Rückgabewertes und entsprechende Antwort
+        # Check the return value and respond accordingly
         return f"""
             Your {deployment_type} is requested!\n
-            As soon as the Network Administrator has accepeted your request, youre {deployment_type} will be available under:\n
+            As soon as the Network Administrator has accepted your request, your {deployment_type} will be available under:\n
             {result}\n
             Thank you!
         """
 
     except Exception as e:
-        # Fehlerbehandlung: Logge den Fehler und gib eine Nachricht zurück
+        # Error handling: Log the error and return a message
         print(f"Error while processing the request: {e}")
         return """
             An unexpected error occurred. Please try again later.
