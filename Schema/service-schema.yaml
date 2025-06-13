@@ -63,7 +63,7 @@ nodes:
         optional: false
         computed_attribute:
           kind: Jinja2
-          jinja2_template: "{{ name__value }}.cldop-test-0.network.garden"
+          jinja2_template: "{{ name__value }}.cldop-stud-g00.network.garden"
       - name: image
         kind: Dropdown
         optional: false
