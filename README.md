@@ -1,35 +1,52 @@
-# infrahub-vidra-demo
-Demo of Infrahub meets Kubernetes by using Vidra 
+# Infrahub + Vidra Demo
 
-## Installation, provision infrahub and run Webserver
+This repository provides a GitOps demo environment showcasing how [Infrahub](https://github.com/opsmill/infrahub) and [Vidra](https://github.com/infrahub-operator/vidra) work together in harmony to declaratively manage Kubernetes resources. It showcases deploying a webserver consisting of a Service, Deployment, Ingress and a Namespace with just a few klicks on to k8s. 
+
+Use this demo to explore how infrastructure models defined in Infrahub can be synchronized to a cluster using Vidra and how our infrahub transformer creates k8s manifest artifacts.
+
+---
+
+## Quick Start (GitHub Codespaces)
+
+1. **Open this repo in GitHub Codespaces or in VisualStudio code and start the devcontainer**
+2. Run the following to initialize everything:
+
 ```bash
 task init
 ```
+This sets up:
 
-Check if the Vidra operator is installed and running
+A local Kubernetes cluster via [Kind](https://kind.sigs.k8s.io)
+Infrahub (including a custom self-service UI)
+Vidra Operator and CLI
+Check Vidra is running:
 ```bash
-kubectl get pod -n vidra-system
+kubectl get pods -n vidra-system
 ```
-Apparently completion and the alias `k` are not working in Codespaces
+💡 Shell convenience features like k alias and completions may not work in Codespaces.
 
-## Frontend and Infrahub
-Infrahub and the self-service Frontend can be accessed by opening the ports tab, clicking on the globe icon in the Forwarded Address column of port `8000` and `5001`.
+🔧 Infrastructure Modeling via UI
 
-- In the frontend you can now create a webserver request. (like one for the Nyan Cat Image)
-- This will generate a proposed change on a new branch in Infrahub. 
-- Login to Infrahub (User: `admin`; Password: `infrahub`) and merge the proposed change. It will now create the Artifacts.
-`
-## Vidra Sync
-Now you can add a [InfrahubSync](https://infrahub-operator.github.io/vidra/guides/usage) 
+Access UIs via the Ports tab:
+Port `8000`: Infrahub (login: admin / infrahub)
+Port `5001`: Self-service frontend
+Create a new request (e.g., a webserver resource for Nyan Cat ).
+This triggers:
 
-There is the sync to main branch Webserver Artifact prepared using `vidra-cli`:
+- A new Infrahub branch with the proposed change
+- Adding the requested webserver to that branche and to the correct group whithin Infrahub.
+- After merging: k8s artifact generation
+
+
+## 🔁 Apply Vidra Sync
+
+To sync the model to your cluster, use the CLI:
 ```bash
 host_ip=$(hostname -I | awk '{print $1}')
 vidra-cli credentials apply https://${host_ip} --username admin --password infrahub
 vidra-cli infrahubsync apply "http://${host_ip}:8000" -a Webserver_Manifest -b main -N default -e
 ```
-
-or simply (does not work in codespaces)
+If running locally (not in Codespaces), you can also use:
 ```bash
 task vidra-add-sync
 ```
@@ -56,5 +73,14 @@ Access the Webserver:
 ```bash
 kubectl port-forward -n <namespace> <svc/service-name> 8080:80
 ```
+## 📚 Available Tasks
+To view available helper commands:
+```bash
+task
+```
+
+## Final Thoughts
+
+This demo isn’t just a quickstart—it’s a glimpse into the future of infrastructure management. Model your systems in Infrahub, let Vidra automate the deployment, and manage everything through intuitive UIs. Whether you’re a platform engineer or just exploring GitOps, this Codespaces-powered demo is the fastest way to experience the workflow.
 
 HAVE FUN! 🥳
